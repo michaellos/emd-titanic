@@ -6,7 +6,7 @@ library(mice)
 
 set.seed(1)
 data <- read.csv("titanic.csv", stringsAsFactors = FALSE)
-print(dim(data))
+# print(dim(data))
 
 data_limited <- data[1:891, c("Pclass", "Sex", "Age")]
 data_limited$Survived=as.factor(data$Survived)
@@ -32,19 +32,36 @@ fit <- train(Survived~ .,
             trControl = ctrl,
             ntree = 100)
 
-print(fit)
+# print(fit)
 
-df <- data.frame(Pclass = 3, Sex = "male", Age = 22.000)
-print(head(data_limited))
-res <- predict(fit, newdata = df, type="prob")
-print(res)
+# df <- data.frame(Pclass = 3, Sex = "male", Age = 22.000)
+# print(head(data_limited))
+# res <- predict(fit, newdata = df, type="prob")
+# print(res)
 
 
 shinyServer(function(input, output) {
 
-    output$testText <- renderText({ 
-        "Pierwsze dane z serwera"
-    })
+
+  observe({
+    if(input$Submit > 0 ) {
+      sex <- input$selectSex
+      Pclass <- as.numeric(input$selectClass)
+      age <- as.numeric(input$textAge)
+      
+      df <- data.frame(Pclass = Pclass, Sex = sex, Age = age)
+      res <- predict(fit, newdata = df, type="prob")
+      print(res[1])
+      print(res[2])
+      output$textResult <- renderText({  
+        
+        paste("Your chances to survive: ", res[2]*100, "%")
+        
+      }) 
+    }
+  })
+
+
 
 
 })

@@ -24,7 +24,7 @@ data_limited <- complete(imputed)
 ctrl <- trainControl(
   method = "repeatedcv",
   number = 10,
-  repeats = 5)
+  repeats = 2)
 
 fit <- train(Survived~ .,
             data = data_limited,
@@ -41,7 +41,7 @@ fit <- train(Survived~ .,
 
 
 shinyServer(function(input, output) {
-
+  print("jestem")
 
   observe({
     if(input$Submit > 0 ) {

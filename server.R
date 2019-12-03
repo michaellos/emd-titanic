@@ -34,34 +34,26 @@ fit <- train(Survived~ .,
 
 # print(fit)
 
-# df <- data.frame(Pclass = 3, Sex = "male", Age = 22.000)
-# print(head(data_limited))
-# res <- predict(fit, newdata = df, type="prob")
-# print(res)
-
 
 shinyServer(function(input, output) {
-  print("jestem")
 
-  observe({
-    if(input$Submit > 0 ) {
+  observeEvent(input$submitButton, {
+    if(!is.na(input$numAge) & input$numAge>0 & input$numAge < 120) {
       sex <- input$selectSex
       Pclass <- as.numeric(input$selectClass)
-      age <- as.numeric(input$textAge)
+      age <- input$numAge
+      print(age)
       
       df <- data.frame(Pclass = Pclass, Sex = sex, Age = age)
       res <- predict(fit, newdata = df, type="prob")
-      print(res[1])
-      print(res[2])
       output$textResult <- renderText({  
-        
         paste("Your chances to survive: ", res[2]*100, "%")
-        
+      }) 
+    }
+    else {
+      output$textResult <- renderText({  
+        paste("Provide at least your age!!!")
       }) 
     }
   })
-
-
-
-
 })

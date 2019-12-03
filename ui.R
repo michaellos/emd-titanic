@@ -27,26 +27,21 @@ shinyUI(fluidPage(
         
         fluidRow(
             
-            column(3, 
-                   textInput("textAge", label = h3("Age"), 
-                             value = "")), 
+            column(3,
+                   numericInput("numAge", label = h3("Age"), value="")),
             
             column(3,
                    selectInput("selectClass", label = h3("Ticket class"), 
-                               choices = list("1st" = 1, "2nd" = 2, "3rd" = 3), selected = 3)),
+                               choices = list("1st" = 1, "2nd" = 2, "3rd" = 3), selected = 1)),
             column(3,
                    br(),
                    br(),
                    br(),
-                   actionButton("Submit", label="Submit")),
+                   actionButton("submitButton", label = "Submit")),
+                   
             
             column(3,
                    textOutput("textResult"))
         ),
-        
-        # mainPanel(
-        #     textOutput("testText")
-        # )
-
     )
 ))
